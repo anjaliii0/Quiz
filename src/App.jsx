@@ -57,12 +57,25 @@ function App() {
 
   const [showAns , setShowAns]=useState(false);
 
+  //new feature
+  const [userAns,setUserAns]=useState([]);
+
 
 
 
   const handleAnswer=(option)=>{
     if(chooseAns) return;
     setChooseAns(option);
+
+    setUserAns([
+
+      ...userAns,{
+        question:question[currQuestion].question,
+        userAns:option,
+        correctAns:question[currQuestion].answer,
+        isCorr:option===question[currQuestion].answer,
+      }
+    ]);
 
     const correct= option === question[currQuestion].answer;
     setCorrectAns(correct);
@@ -91,6 +104,7 @@ function App() {
     setChooseAns("");
     setCorrectAns(null);
     setShowAns(false);
+    setUserAns([]);
   };
 
 
@@ -107,6 +121,30 @@ function App() {
       <h2> Marks : { mark} / {question.length} </h2>
 
       <button onClick ={restart}> Again </button>
+
+     {userAns.map((ele,idx)=>{
+      return <div>
+        <h3>{idx+1}.{ele.question} </h3>
+        <p>Overview:
+        <span
+          className={
+            ele.isCorr ? "correct-text" : "wrong-text"
+          }
+          >
+            {ele.userAns} 
+        </span>
+
+        </p>
+
+        <p>
+          Correct:
+          <span className="correct-text">
+            {ele.correctAns}
+          </span>
+        </p>
+
+      </div>
+     })}
 
   </div>
 
